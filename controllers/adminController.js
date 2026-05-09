@@ -37,8 +37,8 @@ const addDoctor = async (req, res) => {
         }
 
         // hasing doctor password
-        const solt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, solt);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // upload image to cloudinary
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type: "image"});
@@ -102,7 +102,27 @@ const loginAdmin = async (req, res) => {
     }
 }
 
+// API to get all doctors list for admin panel
+const allDoctors = async (req, res) => {
+    try {
+
+        const doctors = await doctorModel.find({}).select('-password')
+
+        res.json({
+            success:true,
+            doctors
+        })
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     addDoctor,
-    loginAdmin
+    loginAdmin,
+    allDoctors
 }
