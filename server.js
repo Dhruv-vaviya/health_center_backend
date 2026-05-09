@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const connectCloudinary = require('./config/cloudinary');
 const adminRouter = require('./routes/adminRoute');
+const doctorRouter = require('./routes/doctorRoute');
 
 
 // app config
@@ -18,6 +19,7 @@ app.use(cors());
 
 // api endpoints
 app.use('/api/admin', adminRouter); 
+app.use('/api/doctor', doctorRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
