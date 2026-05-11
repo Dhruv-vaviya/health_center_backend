@@ -76,7 +76,7 @@ const loginUser = async (req, res) => {
         const user = await userModel.findOne({ email })
 
         if (!user) {
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: "User does not exist"
             });
@@ -100,7 +100,6 @@ const loginUser = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             success: false,
             message: error.message
@@ -108,8 +107,32 @@ const loginUser = async (req, res) => {
     }
 }
 
+// API for get user profile data
+
+const getProfile = async (req, res) => {
+
+    try {
+
+        const userId  = req.userId
+        const userData = await userModel.findById(userId).select('-password')
+
+        res.json({
+            success: true,
+            userData,
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+}
+
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getProfile
 }
